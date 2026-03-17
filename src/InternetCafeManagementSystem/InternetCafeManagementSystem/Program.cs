@@ -1,12 +1,21 @@
 ﻿using InternetCafeManagementSystem.Models;
-using InternetCafeManagementSystem.DataStructures;
+using InternetCafeManagementSystem.Services;
+
+InternetCafeService cafe = new InternetCafeService();
 
 Customer c1 = new Customer("C001", "Hasan", "hasan@email.com", 10);
-PC pc1 = new PC("PC01", 5);
-Session s1 = new Session("S001", c1.CustomerID, pc1.PCID, DateTime.Now);
 
-Console.WriteLine(c1);
-Console.WriteLine(pc1);
-Console.WriteLine(s1);
+cafe.AddCustomer(c1);
+
+PC pc1 = new PC("PC01", 5);
+PC pc2 = new PC("PC02", 5);
+
+cafe.AddPC(pc1);
+cafe.AddPC(pc2);
+
+var session = cafe.StartSession("S001", "C001");
+
+Console.WriteLine("Session started:");
+Console.WriteLine(session);
 
 Console.ReadLine();
