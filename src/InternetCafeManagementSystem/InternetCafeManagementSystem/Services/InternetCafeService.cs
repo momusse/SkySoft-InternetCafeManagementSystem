@@ -30,6 +30,11 @@ namespace InternetCafeManagementSystem.Services
             return customers.Get(id);
         }
 
+        public bool CustomerExists(string id)
+        {
+            return customers.Contains(id);
+        }
+
         public void AddPC(PC pc)
         {
             pcs.Add(pc);
@@ -48,6 +53,9 @@ namespace InternetCafeManagementSystem.Services
 
         public Session StartSession(string sessionId, string customerId)
         {
+            if (!customers.Contains(customerId))
+                throw new Exception("Customer not found.");
+
             var pc = GetAvailablePC();
 
             if (pc == null)
@@ -56,29 +64,41 @@ namespace InternetCafeManagementSystem.Services
             pc.IsAvailable = false;
 
             Session session = new Session(sessionId, customerId, pc.PCID, DateTime.Now);
-
             sessions.Add(session);
 
             return session;
         }
 
-        public void EndSession(string sessionId)
+        public decimal EndSession(string sessionId)
         {
             foreach (var session in sessions)
             {
-                if (session.SessionID == sessionId)
+                if (session.SessionID == sessionId && session.EndTime == null)
                 {
                     session.EndTime = DateTime.Now;
+
+                    decimal hourlyRate = 0;
 
                     foreach (var pc in pcs)
                     {
                         if (pc.PCID == session.PCID)
                         {
                             pc.IsAvailable = true;
+                            hourlyRate = pc.HourlyRate;
+                            break;
                         }
                     }
+
+                    return session.CalculateCost(hourlyRate);
                 }
             }
+
+            throw new Exception("Active session not found.");
+        }
+
+        public List<Session> GetAllSessions()
+        {
+            return sessions;
         }
     }
 }
