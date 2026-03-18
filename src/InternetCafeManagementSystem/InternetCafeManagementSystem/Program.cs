@@ -18,7 +18,8 @@ while (true)
     Console.WriteLine("=== Internet Cafe System ===");
     Console.WriteLine("1. Start Session");
     Console.WriteLine("2. End Last Session");
-    Console.WriteLine("3. Exit");
+    Console.WriteLine("3. Search Customer");
+    Console.WriteLine("4. Exit");
     Console.Write("Select option: ");
 
     string? choice = Console.ReadLine();
@@ -69,6 +70,33 @@ while (true)
     }
     else if (choice == "3")
     {
+        Console.Write("Enter Customer ID: ");
+        string? id = Console.ReadLine();
+
+        try
+        {
+            var customer = cafe.GetCustomer(id!);
+            Console.WriteLine("\nCustomer found:");
+            Console.WriteLine(customer);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+
+        Console.WriteLine("\nPress any key...");
+        Console.ReadKey();
+    }
+
+    else if (choice == "4")
+    {
+        Console.WriteLine("Exiting...");
         break;
+    }
+    else
+    {
+        Console.WriteLine("Invalid option. Please try again.");
+        Console.WriteLine("\nPress any key...");
+        Console.ReadKey();
     }
 }
