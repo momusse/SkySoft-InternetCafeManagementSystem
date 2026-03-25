@@ -32,7 +32,15 @@ namespace InternetCafeManagementSystem.Models
 
         public override string ToString()
         {
-            return $"{SessionID} - Customer: {CustomerID} - PC: {PCID} - Started: {StartTime}";
+            string durationText = "In progress";
+
+            if (EndTime != null)
+            {
+                TimeSpan duration = EndTime.Value - StartTime;
+                durationText = $"{duration.TotalMinutes:F1} mins";
+            }
+            
+            return $"{SessionID} - Customer: {CustomerID} - PC: {PCID} - Duration: {durationText}";
         }
     }
 }
