@@ -19,7 +19,8 @@ while (true)
     Console.WriteLine("1. Start Session");
     Console.WriteLine("2. End Last Session");
     Console.WriteLine("3. Search Customer");
-    Console.WriteLine("4. Exit");
+    Console.WriteLine("4. View All Sessions");
+    Console.WriteLine("5. Exit");
     Console.Write("Select option: ");
 
     string? choice = Console.ReadLine();
@@ -90,13 +91,32 @@ while (true)
 
     else if (choice == "4")
     {
-        Console.WriteLine("Exiting...");
+        var sessions = cafe.GetAllSessions();
+
+        Console.WriteLine("\nAll Sessions:");
+
+        if (sessions.Count == 0)
+        {
+            Console.WriteLine("No sessions found.");
+        }
+        else
+        {
+            foreach (var s in sessions)
+            {
+                Console.WriteLine(s);
+            }
+        }
+
+        Console.WriteLine("\nPress any key...");
+        Console.ReadKey();
+    }
+    else if (choice == "5")
+    {
         break;
     }
     else
     {
-        Console.WriteLine("Invalid option. Please try again.");
-        Console.WriteLine("\nPress any key...");
+        Console.WriteLine("Invalid option. Press any key...");
         Console.ReadKey();
     }
 }
