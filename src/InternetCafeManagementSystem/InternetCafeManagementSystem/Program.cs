@@ -25,10 +25,25 @@ while (true)
 
     string? choice = Console.ReadLine();
 
-    if (choice == "1")
+    if (string.IsNullOrWhiteSpace(choice))
+    {
+        Console.WriteLine("\nError: Menu choice cannot be empty.");
+        Console.WriteLine("\nPress any key...");
+        Console.ReadKey();
+        continue;
+    }
+        if (choice == "1")
     {
         Console.Write("Enter Customer ID: ");
         string? customerId = Console.ReadLine();
+
+        if (string.IsNullOrWhiteSpace(customerId))
+        {
+            Console.WriteLine("\nError: Customer ID cannot be empty.");
+            Console.WriteLine("\nPress any key...");
+            Console.ReadKey();
+            continue;
+        }
 
         try
         {
