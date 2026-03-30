@@ -1,13 +1,16 @@
 ﻿using InternetCafeManagementSystem.Models;
 using InternetCafeManagementSystem.Services;
 
+// Initialise the service layer - loads all data from the database on startup
 InternetCafeService cafe = new InternetCafeService();
 
+// List of banned words used to filter inappropriate user input
 List<string> bannedWords = new List<string>
 {
     "porn", "pornography", "fuck", "xxx", "shit", "bitch", "ass"
 };
 
+// Checks if the input contains any banned words - case insensitive - O(n)
 bool ContainsBannedWord(string? input)
 {
     if (string.IsNullOrWhiteSpace(input)) return false;
@@ -19,6 +22,8 @@ bool ContainsBannedWord(string? input)
     return false;
 }
 
+// Reusable input validation method used across all menu options
+// Checks for empty input and banned words, returns a specific error message via out parameter
 bool IsValidInput(string? input, string fieldName, out string? error)
 {
     if (string.IsNullOrWhiteSpace(input))
@@ -35,6 +40,7 @@ bool IsValidInput(string? input, string fieldName, out string? error)
     return true;
 }
 
+// Main application loop - runs until the user selects Exit
 while (true)
 {
     Console.Clear();
@@ -77,6 +83,7 @@ while (true)
 
         try
         {
+            // Generate unique session ID using current time - format: S143022
             string sessionId = "S" + DateTime.Now.ToString("HHmmss");
             var session = cafe.StartSession(sessionId, customerId!);
 
@@ -122,6 +129,7 @@ while (true)
     }
     else if (choice == "3")
     {
+        // O(1) average - looks up customer directly in the hash table by ID
         Console.Write("Enter Customer ID: ");
         string? id = Console.ReadLine();
 
@@ -149,6 +157,7 @@ while (true)
     }
     else if (choice == "4")
     {
+        // O(n) - iterates over all customers in the hash table using GetAll()
         Console.Write("Enter customer name to search: ");
         string? name = Console.ReadLine();
 
@@ -180,6 +189,7 @@ while (true)
     }
     else if (choice == "5")
     {
+        // Iterates over the full session linked list - O(n)
         var sessions = cafe.GetAllSessions();
 
         Console.WriteLine("\nAll Sessions:");
@@ -201,6 +211,7 @@ while (true)
     }
     else if (choice == "6")
     {
+        // Filters sessions where EndTime is null - O(n)
         var active = cafe.GetActiveSessions();
 
         Console.WriteLine("\nActive Sessions:");
@@ -222,6 +233,7 @@ while (true)
     }
     else if (choice == "7")
     {
+        // Iterates over the PC linked list and displays availability status - O(n)
         var pcs = cafe.GetAllPCs();
 
         Console.WriteLine("\nPC Availability:");
@@ -236,6 +248,7 @@ while (true)
     }
     else if (choice == "8")
     {
+        // Filters sessions by CustomerID - O(n)
         Console.Write("Enter Customer ID: ");
         string? id = Console.ReadLine();
 
@@ -288,6 +301,7 @@ while (true)
         Console.Write("Enter top up amount (£): ");
         string? amountInput = Console.ReadLine();
 
+        // Validate amount is a valid positive decimal number
         if (!decimal.TryParse(amountInput, out decimal amount) || amount <= 0)
         {
             Console.WriteLine("\nError: Please enter a valid amount greater than zero.");
@@ -348,6 +362,7 @@ while (true)
         Console.Write("Enter Starting Balance (£): ");
         string? balanceInput = Console.ReadLine();
 
+        // Validate balance is a non-negative decimal number
         if (!decimal.TryParse(balanceInput, out decimal balance) || balance < 0)
         {
             Console.WriteLine("\nError: Please enter a valid balance.");

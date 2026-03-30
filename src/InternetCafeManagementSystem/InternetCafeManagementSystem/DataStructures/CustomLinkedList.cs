@@ -4,7 +4,8 @@ using System.Collections.Generic;
 
 namespace InternetCafeManagementSystem.DataStructures
 {
-    // A single node in the linked list
+    // Represents a single node in the linked list
+    // Each node holds data and a reference to the next node
     public class Node<T>
     {
         public T Data { get; set; }
@@ -13,14 +14,20 @@ namespace InternetCafeManagementSystem.DataStructures
         public Node(T data)
         {
             Data = data;
-            Next = null;
+            Next = null; // Next is null by default until linked to another node
         }
     }
 
+    /// <summary>
+    /// A generic singly linked list implemented from scratch.
+    /// Each node points to the next, forming a chain from head to null.
+    /// Implements IEnumerable to support foreach loops across the list.
+    /// Used to store PCs and Sessions in the SkySoft Internet Cafe System.
+    /// </summary>
     public class CustomLinkedList<T> : IEnumerable<T>
     {
-        private Node<T>? head;
-        private int count;
+        private Node<T>? head; // Points to the first node in the list
+        private int count;     // Tracks total number of nodes
 
         public int Count => count;
 
@@ -30,20 +37,23 @@ namespace InternetCafeManagementSystem.DataStructures
             count = 0;
         }
 
-        // O(1) - always adds to the front
+        // Adds a new node at the front of the list - O(1)
+        // Faster than AddLast as no traversal is needed
         public void AddFirst(T data)
         {
             Node<T> newNode = new Node<T>(data);
-            newNode.Next = head;
-            head = newNode;
+            newNode.Next = head; // New node points to current head
+            head = newNode;      // New node becomes the new head
             count++;
         }
 
-        // O(n) - traverses to the end to add
+        // Adds a new node at the end of the list - O(n)
+        // Must traverse the full list to find the last node
         public void AddLast(T data)
         {
             Node<T> newNode = new Node<T>(data);
 
+            // If list is empty, new node becomes the head
             if (head == null)
             {
                 head = newNode;
@@ -51,18 +61,20 @@ namespace InternetCafeManagementSystem.DataStructures
                 return;
             }
 
+            // Traverse to the last node
             Node<T> current = head;
-
             while (current.Next != null)
             {
                 current = current.Next;
             }
 
+            // Link the last node to the new node
             current.Next = newNode;
             count++;
         }
 
-        // O(n) - searches through each node
+        // Searches the list using a predicate (lambda condition) - O(n)
+        // Returns the first matching item, or default (null) if not found
         public T? Find(Func<T, bool> predicate)
         {
             Node<T>? current = head;
@@ -75,16 +87,18 @@ namespace InternetCafeManagementSystem.DataStructures
                 current = current.Next;
             }
 
+            // Returns null for reference types if no match found
             return default;
         }
 
-        // O(n) - must traverse to find the node
+        // Removes the first node matching the predicate - O(n)
+        // Returns true if removed, false if no match found
         public bool Remove(Func<T, bool> predicate)
         {
             if (head == null)
                 return false;
 
-            // Special case: removing the head node
+            // Special case: if the head node matches, update head to the next node
             if (predicate(head.Data))
             {
                 head = head.Next;
@@ -92,12 +106,14 @@ namespace InternetCafeManagementSystem.DataStructures
                 return true;
             }
 
+            // Traverse and check the next node at each step
+            // This allows us to re-link around the removed node
             Node<T>? current = head;
-
             while (current.Next != null)
             {
                 if (predicate(current.Next.Data))
                 {
+                    // Skip over the matching node by linking to the one after it
                     current.Next = current.Next.Next;
                     count--;
                     return true;
@@ -109,13 +125,14 @@ namespace InternetCafeManagementSystem.DataStructures
             return false;
         }
 
-        // O(n) - checks every node
+        // Returns true if any node matches the predicate - O(n)
         public bool Contains(Func<T, bool> predicate)
         {
             return Find(predicate) != null;
         }
 
-        // Allows foreach loops to work on this list - O(n)
+        // Implements IEnumerable to allow foreach loops on this list - O(n)
+        // yield return produces each value one at a time without building a separate collection
         public IEnumerator<T> GetEnumerator()
         {
             Node<T>? current = head;
@@ -127,6 +144,7 @@ namespace InternetCafeManagementSystem.DataStructures
             }
         }
 
+        // Required by IEnumerable for non-generic foreach support
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
