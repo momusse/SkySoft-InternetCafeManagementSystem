@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using InternetCafeManagementSystem.Models;
 using InternetCafeManagementSystem.DataStructures;
+using InternetCafeManagementSystem.Data;
 
 namespace InternetCafeManagementSystem.Services
 {
@@ -10,12 +10,19 @@ namespace InternetCafeManagementSystem.Services
         private CustomHashTable<string, Customer> customers;
         private CustomLinkedList<PC> pcs;
         private CustomLinkedList<Session> sessions;
+        private DatabaseHelper db;
 
         public InternetCafeService()
         {
             customers = new CustomHashTable<string, Customer>(10);
             pcs = new CustomLinkedList<PC>();
             sessions = new CustomLinkedList<Session>();
+            db = new DatabaseHelper();
+
+            // Load data from database on startup
+            db.LoadCustomers(customers);
+            db.LoadPCs(pcs);
+            db.LoadSessions(sessions);
         }
 
         // --- Customer methods ---
@@ -23,6 +30,7 @@ namespace InternetCafeManagementSystem.Services
         public void AddCustomer(Customer customer)
         {
             customers.Add(customer.CustomerID, customer);
+            db.SaveCustomer(customer);
         }
 
         public Customer GetCustomer(string id)
@@ -66,6 +74,9 @@ namespace InternetCafeManagementSystem.Services
             Session session = new Session(sessionId, customerId, pc.PCID, DateTime.Now);
             sessions.AddLast(session);
 
+            // Save to database
+            db.SaveSession(session);
+
             return session;
         }
 
@@ -86,7 +97,12 @@ namespace InternetCafeManagementSystem.Services
 
             pc.IsAvailable = true;
 
-            return session.CalculateCost(pc.HourlyRate);
+            decimal cost = session.CalculateCost(pc.HourlyRate);
+
+            // Update database
+            db.UpdateSession(session, cost);
+
+            return cost;
         }
 
         public CustomLinkedList<Session> GetAllSessions()

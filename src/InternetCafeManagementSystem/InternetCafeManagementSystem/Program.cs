@@ -3,13 +3,6 @@ using InternetCafeManagementSystem.Services;
 
 InternetCafeService cafe = new InternetCafeService();
 
-// Preloaded data
-cafe.AddCustomer(new Customer("C001", "Hasan", "hasan@email.com", 10));
-cafe.AddCustomer(new Customer("C002", "Ali", "ali@email.com", 15));
-
-cafe.AddPC(new PC("PC01", 5));
-cafe.AddPC(new PC("PC02", 5));
-
 List<string> bannedWords = new List<string>
 {
     "porn",
