@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-
 using InternetCafeManagementSystem.Models;
 using InternetCafeManagementSystem.DataStructures;
 
@@ -10,15 +8,17 @@ namespace InternetCafeManagementSystem.Services
     public class InternetCafeService
     {
         private CustomHashTable<string, Customer> customers;
-        private List<PC> pcs;
-        private List<Session> sessions;
+        private CustomLinkedList<PC> pcs;
+        private CustomLinkedList<Session> sessions;
 
         public InternetCafeService()
         {
             customers = new CustomHashTable<string, Customer>(10);
-            pcs = new List<PC>();
-            sessions = new List<Session>();
+            pcs = new CustomLinkedList<PC>();
+            sessions = new CustomLinkedList<Session>();
         }
+
+        // --- Customer methods ---
 
         public void AddCustomer(Customer customer)
         {
@@ -35,22 +35,22 @@ namespace InternetCafeManagementSystem.Services
             return customers.Contains(id);
         }
 
+        // --- PC methods ---
+
         public void AddPC(PC pc)
         {
-            pcs.Add(pc);
+            pcs.AddLast(pc);
         }
 
         public PC? GetAvailablePC()
         {
-            foreach (var pc in pcs)
-            {
-                if (pc.IsAvailable)
-                    return pc;
-            }
-
-            return null;
+            return pcs.Find(pc => pc.IsAvailable);
         }
 
+        // --- Session methods ---
+
+        // O(1) average for customer lookup (hash table)
+        // O(n) for finding available PC (linked list traversal)
         public Session StartSession(string sessionId, string customerId)
         {
             if (!customers.Contains(customerId))
@@ -59,46 +59,44 @@ namespace InternetCafeManagementSystem.Services
             var pc = GetAvailablePC();
 
             if (pc == null)
-                throw new Exception("No available PCs.");
+                throw new Exception("No PCs are currently available.");
 
             pc.IsAvailable = false;
 
             Session session = new Session(sessionId, customerId, pc.PCID, DateTime.Now);
-            sessions.Add(session);
+            sessions.AddLast(session);
 
             return session;
         }
 
+        // O(n) - traverses session linked list to find the session
         public decimal EndSession(string sessionId)
         {
-            foreach (var session in sessions)
-            {
-                if (session.SessionID == sessionId && session.EndTime == null)
-                {
-                    session.EndTime = DateTime.Now;
+            var session = sessions.Find(s => s.SessionID == sessionId && s.EndTime == null);
 
-                    decimal hourlyRate = 0;
+            if (session == null)
+                throw new Exception("Active session not found.");
 
-                    foreach (var pc in pcs)
-                    {
-                        if (pc.PCID == session.PCID)
-                        {
-                            pc.IsAvailable = true;
-                            hourlyRate = pc.HourlyRate;
-                            break;
-                        }
-                    }
+            session.EndTime = DateTime.Now;
 
-                    return session.CalculateCost(hourlyRate);
-                }
-            }
+            var pc = pcs.Find(p => p.PCID == session.PCID);
 
-            throw new Exception("Active session not found.");
+            if (pc == null)
+                throw new Exception("PC not found.");
+
+            pc.IsAvailable = true;
+
+            return session.CalculateCost(pc.HourlyRate);
         }
 
-        public List<Session> GetAllSessions()
+        public CustomLinkedList<Session> GetAllSessions()
         {
             return sessions;
+        }
+
+        public CustomLinkedList<PC> GetAllPCs()
+        {
+            return pcs;
         }
     }
 }

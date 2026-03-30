@@ -21,7 +21,7 @@ namespace InternetCafeManagementSystem.DataStructures
 
         private int GetBucketIndex(TKey key)
         {
-            return Math.Abs(key.GetHashCode()) % size;
+            return (key.GetHashCode() & 0x7FFFFFFF) % size;
         }
 
         public void Add(TKey key, TValue value)
