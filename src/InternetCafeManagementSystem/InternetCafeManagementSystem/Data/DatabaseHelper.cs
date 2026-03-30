@@ -99,6 +99,21 @@ namespace InternetCafeManagementSystem.Data
             cmd.ExecuteNonQuery();
         }
 
+        // Update customer balance in DB
+        public void UpdateCustomerBalance(Customer customer)
+        {
+            using SqlConnection conn = new SqlConnection(connectionString);
+            conn.Open();
+
+            string query = "UPDATE Customers SET Balance = @balance WHERE CustomerID = @id";
+            using SqlCommand cmd = new SqlCommand(query, conn);
+
+            cmd.Parameters.AddWithValue("@balance", customer.Balance);
+            cmd.Parameters.AddWithValue("@id", customer.CustomerID);
+
+            cmd.ExecuteNonQuery();
+        }
+
         // Update session when it ends
         public void UpdateSession(Session session, decimal cost)
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using InternetCafeManagementSystem.Models;
 using InternetCafeManagementSystem.DataStructures;
 using InternetCafeManagementSystem.Data;
@@ -33,6 +34,7 @@ namespace InternetCafeManagementSystem.Services
             db.SaveCustomer(customer);
         }
 
+        // O(1) average - hash table lookup
         public Customer GetCustomer(string id)
         {
             return customers.Get(id);
@@ -43,6 +45,33 @@ namespace InternetCafeManagementSystem.Services
             return customers.Contains(id);
         }
 
+        // O(n) - searches all customers by name
+        public List<Customer> SearchCustomersByName(string name)
+        {
+            List<Customer> results = new List<Customer>();
+
+            foreach (var customer in customers.GetAll())
+            {
+                if (customer.Name.ToLower().Contains(name.ToLower()))
+                {
+                    results.Add(customer);
+                }
+            }
+
+            return results;
+        }
+
+        // O(n) - top up customer balance
+        public void TopUpBalance(string customerId, decimal amount)
+        {
+            if (amount <= 0)
+                throw new Exception("Top up amount must be greater than zero.");
+
+            var customer = customers.Get(customerId);
+            customer.Balance += amount;
+            db.UpdateCustomerBalance(customer);
+        }
+
         // --- PC methods ---
 
         public void AddPC(PC pc)
@@ -50,9 +79,16 @@ namespace InternetCafeManagementSystem.Services
             pcs.AddLast(pc);
         }
 
+        // O(n) - searches linked list for available PC
         public PC? GetAvailablePC()
         {
             return pcs.Find(pc => pc.IsAvailable);
+        }
+
+        // O(n) - returns all PCs
+        public CustomLinkedList<PC> GetAllPCs()
+        {
+            return pcs;
         }
 
         // --- Session methods ---
@@ -105,14 +141,38 @@ namespace InternetCafeManagementSystem.Services
             return cost;
         }
 
+        // O(n) - returns all sessions
         public CustomLinkedList<Session> GetAllSessions()
         {
             return sessions;
         }
 
-        public CustomLinkedList<PC> GetAllPCs()
+        // O(n) - returns only active sessions
+        public List<Session> GetActiveSessions()
         {
-            return pcs;
+            List<Session> active = new List<Session>();
+
+            foreach (var session in sessions)
+            {
+                if (session.EndTime == null)
+                    active.Add(session);
+            }
+
+            return active;
+        }
+
+        // O(n) - returns session history for a specific customer
+        public List<Session> GetSessionHistory(string customerId)
+        {
+            List<Session> history = new List<Session>();
+
+            foreach (var session in sessions)
+            {
+                if (session.CustomerID == customerId)
+                    history.Add(session);
+            }
+
+            return history;
         }
     }
 }

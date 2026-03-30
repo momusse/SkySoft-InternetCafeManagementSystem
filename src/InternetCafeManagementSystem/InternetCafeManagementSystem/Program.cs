@@ -8,7 +8,6 @@ List<string> bannedWords = new List<string>
     "porn", "pornography", "fuck", "xxx", "shit", "bitch", "ass"
 };
 
-// Reusable input validation methods
 bool ContainsBannedWord(string? input)
 {
     if (string.IsNullOrWhiteSpace(input)) return false;
@@ -39,13 +38,18 @@ bool IsValidInput(string? input, string fieldName, out string? error)
 while (true)
 {
     Console.Clear();
-    Console.WriteLine("=== Internet Cafe System ===");
+    Console.WriteLine("=== SkySoft Internet Cafe System ===");
     Console.WriteLine("1. Start Session");
     Console.WriteLine("2. End Session");
-    Console.WriteLine("3. Search Customer");
-    Console.WriteLine("4. View All Sessions");
-    Console.WriteLine("5. Add Customer");
-    Console.WriteLine("6. Exit");
+    Console.WriteLine("3. Search Customer by ID");
+    Console.WriteLine("4. Search Customer by Name");
+    Console.WriteLine("5. View All Sessions");
+    Console.WriteLine("6. View Active Sessions");
+    Console.WriteLine("7. View PC Availability");
+    Console.WriteLine("8. View Customer Session History");
+    Console.WriteLine("9. Top Up Customer Balance");
+    Console.WriteLine("10. Add Customer");
+    Console.WriteLine("11. Exit");
     Console.Write("Select option: ");
 
     string? choice = Console.ReadLine();
@@ -145,6 +149,37 @@ while (true)
     }
     else if (choice == "4")
     {
+        Console.Write("Enter customer name to search: ");
+        string? name = Console.ReadLine();
+
+        if (!IsValidInput(name, "Name", out string? error))
+        {
+            Console.WriteLine($"\nError: {error}");
+            Console.WriteLine("\nPress any key...");
+            Console.ReadKey();
+            continue;
+        }
+
+        var results = cafe.SearchCustomersByName(name!);
+
+        if (results.Count == 0)
+        {
+            Console.WriteLine("\nNo customers found with that name.");
+        }
+        else
+        {
+            Console.WriteLine($"\nFound {results.Count} customer(s):");
+            foreach (var c in results)
+            {
+                Console.WriteLine(c);
+            }
+        }
+
+        Console.WriteLine("\nPress any key...");
+        Console.ReadKey();
+    }
+    else if (choice == "5")
+    {
         var sessions = cafe.GetAllSessions();
 
         Console.WriteLine("\nAll Sessions:");
@@ -164,7 +199,118 @@ while (true)
         Console.WriteLine("\nPress any key...");
         Console.ReadKey();
     }
-    else if (choice == "5")
+    else if (choice == "6")
+    {
+        var active = cafe.GetActiveSessions();
+
+        Console.WriteLine("\nActive Sessions:");
+
+        if (active.Count == 0)
+        {
+            Console.WriteLine("No active sessions.");
+        }
+        else
+        {
+            foreach (var s in active)
+            {
+                Console.WriteLine(s);
+            }
+        }
+
+        Console.WriteLine("\nPress any key...");
+        Console.ReadKey();
+    }
+    else if (choice == "7")
+    {
+        var pcs = cafe.GetAllPCs();
+
+        Console.WriteLine("\nPC Availability:");
+
+        foreach (var pc in pcs)
+        {
+            Console.WriteLine(pc);
+        }
+
+        Console.WriteLine("\nPress any key...");
+        Console.ReadKey();
+    }
+    else if (choice == "8")
+    {
+        Console.Write("Enter Customer ID: ");
+        string? id = Console.ReadLine();
+
+        if (!IsValidInput(id, "Customer ID", out string? error))
+        {
+            Console.WriteLine($"\nError: {error}");
+            Console.WriteLine("\nPress any key...");
+            Console.ReadKey();
+            continue;
+        }
+
+        try
+        {
+            var history = cafe.GetSessionHistory(id!);
+
+            if (history.Count == 0)
+            {
+                Console.WriteLine("\nNo session history found for this customer.");
+            }
+            else
+            {
+                Console.WriteLine($"\nSession history for {id}:");
+                foreach (var s in history)
+                {
+                    Console.WriteLine(s);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"\nError: {ex.Message}");
+        }
+
+        Console.WriteLine("\nPress any key...");
+        Console.ReadKey();
+    }
+    else if (choice == "9")
+    {
+        Console.Write("Enter Customer ID: ");
+        string? id = Console.ReadLine();
+
+        if (!IsValidInput(id, "Customer ID", out string? error))
+        {
+            Console.WriteLine($"\nError: {error}");
+            Console.WriteLine("\nPress any key...");
+            Console.ReadKey();
+            continue;
+        }
+
+        Console.Write("Enter top up amount (£): ");
+        string? amountInput = Console.ReadLine();
+
+        if (!decimal.TryParse(amountInput, out decimal amount) || amount <= 0)
+        {
+            Console.WriteLine("\nError: Please enter a valid amount greater than zero.");
+            Console.WriteLine("\nPress any key...");
+            Console.ReadKey();
+            continue;
+        }
+
+        try
+        {
+            cafe.TopUpBalance(id!, amount);
+            Console.WriteLine($"\nBalance topped up successfully!");
+            Console.WriteLine(cafe.GetCustomer(id!));
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"\nError: {ex.Message}");
+        }
+
+        Console.WriteLine("\nPress any key...");
+        Console.ReadKey();
+    }
+    else if (choice == "10")
     {
         Console.Write("Enter Customer ID: ");
         string? newId = Console.ReadLine();
@@ -225,14 +371,14 @@ while (true)
         Console.WriteLine("\nPress any key...");
         Console.ReadKey();
     }
-    else if (choice == "6")
+    else if (choice == "11")
     {
-        Console.WriteLine("\nGoodbye!");
+        Console.WriteLine("\nThank You for using SkySoft Internet Cafe System. Goodbye!");
         break;
     }
     else
     {
-        Console.WriteLine("\nInvalid option. Please select 1-6.");
+        Console.WriteLine("\nInvalid option. Please select 1-11.");
         Console.WriteLine("Press any key...");
         Console.ReadKey();
     }
