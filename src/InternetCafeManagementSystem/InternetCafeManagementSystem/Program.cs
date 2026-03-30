@@ -12,6 +12,14 @@ cafe.AddPC(new PC("PC02", 5));
 
 string? lastSessionId = null;
 
+List<string> bannedWords = new List<string>
+{
+    "porn",
+    "pornography",
+    "fuck",
+    "xxx"
+};
+
 while (true)
 {
     Console.Clear();
@@ -36,6 +44,26 @@ while (true)
     {
         Console.Write("Enter Customer ID: ");
         string? customerId = Console.ReadLine();
+
+        bool isBlocked = false;
+
+        foreach (var word in bannedWords)
+        {
+            if (customerId != null && customerId.ToLower().Contains(word))
+            {
+                isBlocked = true;
+                break;
+            }
+        }
+
+        if (isBlocked)
+        { 
+                Console.WriteLine("\nError: Inappropriate input detected.");
+                Console.WriteLine("\nPress any key...");
+                Console.ReadKey();
+                continue;
+            }
+        
 
         if (string.IsNullOrWhiteSpace(customerId))
         {
