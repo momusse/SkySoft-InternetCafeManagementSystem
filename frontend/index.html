@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SkySoft Internet Cafe Management Panel</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-top">
+          <img src="logo.PNG" alt="SkySoft logo" class="brand-logo-image" />
+          <div class="brand-text">
+            <h1>SkySoft Internet Cafe</h1>
+            <p>Management Panel</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-title">Main Menu</div>
+      <nav class="nav">
+        <a href="#dashboard" class="active">Dashboard</a>
+        <a href="#add-customer">Add Customer</a>
+        <a href="#start-session">Start Session</a>
+        <a href="#end-session">End Session</a>
+        <a href="#search-customer">Search Customer</a>
+        <a href="#all-sessions">View All Sessions</a>
+        <a href="#active-sessions">View Active Sessions</a>
+        <a href="#pc-availability">View PC Availability</a>
+        <a href="#session-history">Session History</a>
+        <a href="#topup-balance">Top Up Balance</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <div class="topbar" id="dashboard">
+        <div>
+          <h2>Internet Cafe Dashboard</h2>
+          <p>Frontend design based on the console app menu and database structure.</p>
+        </div>
+        <div class="pill" id="liveClock">Loading time...</div>
+      </div>
+
+      <section class="grid-4">
+        <div class="card">
+          <div class="stat-label">Total Customers</div>
+          <div class="stat-value" id="customerCount">6</div>
+          <div class="stat-note">Registered customers in the system</div>
+        </div>
+
+        <div class="card">
+          <div class="stat-label">Active Sessions</div>
+          <div class="stat-value" id="activeSessionCount">1</div>
+          <div class="stat-note">Currently in progress</div>
+        </div>
+
+        <div class="card">
+          <div class="stat-label">Available PCs</div>
+          <div class="stat-value" id="availablePcCount">3</div>
+          <div class="stat-note">Ready for new sessions</div>
+        </div>
+
+        <div class="card">
+          <div class="stat-label">Total Sessions</div>
+          <div class="stat-value" id="sessionCount">5</div>
+          <div class="stat-note">Stored in session history</div>
+        </div>
+      </section>
+
+      <section class="card quick-actions-card">
+        <div class="section-header">
+          <div>
+            <h3>Quick Actions</h3>
+            <p>These match the main features in the console app.</p>
+          </div>
+
+          <div class="actions quick-actions">
+            <a class="button quick-link primary" href="#start-session">Start Session</a>
+            <a class="button secondary quick-link" href="#end-session">End Session</a>
+            <a class="button secondary quick-link" href="#add-customer">Add Customer</a>
+          </div>
+        </div>
+      </section>
+
+      <div class="grid-2 section-gap">
+        <section class="card" id="add-customer">
+          <div class="section-header">
+            <div>
+              <h3>Add Customer</h3>
+              <p>Console option 10</p>
+            </div>
+          </div>
+
+          <form id="customerForm">
+            <div class="form-grid-2">
+              <div class="field">
+                <label for="customerId">Customer ID</label>
+                <input id="customerId" type="text" placeholder="e.g. C007" />
+              </div>
+
+              <div class="field">
+                <label for="customerName">Customer Name</label>
+                <input id="customerName" type="text" placeholder="Enter full name" />
+              </div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="field">
+                <label for="customerEmail">Email</label>
+                <input id="customerEmail" type="email" placeholder="example@email.com" />
+              </div>
+
+              <div class="field">
+                <label for="customerBalance">Starting Balance (£)</label>
+                <input id="customerBalance" type="number" step="0.01" min="0" placeholder="15.00" />
+              </div>
+            </div>
+
+            <div class="helper">
+              Validation includes required fields, unique ID, numeric balance, and banned-word filtering.
+            </div>
+
+            <button type="submit">Add Customer</button>
+            <div id="customerMessage" class="message"></div>
+          </form>
+        </section>
+
+        <section class="card" id="topup-balance">
+          <div class="section-header">
+            <div>
+              <h3>Top Up Customer Balance</h3>
+              <p>Console option 9</p>
+            </div>
+          </div>
+
+          <form id="topupForm">
+            <div class="field">
+              <label for="topupCustomer">Select Customer</label>
+              <select id="topupCustomer"></select>
+            </div>
+
+            <div class="field">
+              <label for="topupAmount">Top Up Amount (£)</label>
+              <input id="topupAmount" type="number" min="1" step="0.01" placeholder="10.00" />
+            </div>
+
+            <button type="submit">Top Up Balance</button>
+            <div id="topupMessage" class="message"></div>
+          </form>
+        </section>
+      </div>
+
+      <div class="grid-2">
+        <section class="card" id="start-session">
+          <div class="section-header">
+            <div>
+              <h3>Start Session</h3>
+              <p>Console option 1</p>
+            </div>
+          </div>
+
+          <form id="startSessionForm">
+            <div class="field">
+              <label for="sessionCustomer">Customer</label>
+              <select id="sessionCustomer"></select>
+            </div>
+
+            <div class="field">
+              <label for="sessionPc">PC</label>
+              <select id="sessionPc"></select>
+            </div>
+
+            <button type="submit">Start New Session</button>
+            <div id="sessionStartMessage" class="message"></div>
+          </form>
+        </section>
+
+        <section class="card" id="end-session">
+          <div class="section-header">
+            <div>
+              <h3>End Session</h3>
+              <p>Console option 2</p>
+            </div>
+          </div>
+
+          <form id="endSessionForm">
+            <div class="field">
+              <label for="activeSessionSelect">Active Session</label>
+              <select id="activeSessionSelect"></select>
+            </div>
+
+            <button type="submit" class="danger">End Selected Session</button>
+            <div id="sessionEndMessage" class="message"></div>
+          </form>
+        </section>
+      </div>
+
+      <section class="card section-gap" id="search-customer">
+        <div class="section-header">
+          <div>
+            <h3>Search Customer</h3>
+            <p>Console options 3 and 4: by ID or by Name</p>
+          </div>
+        </div>
+
+        <div class="search-bar">
+          <select id="searchType">
+            <option value="id">Search by ID</option>
+            <option value="name">Search by Name</option>
+          </select>
+
+          <input id="searchInput" type="text" placeholder="Enter customer ID or name" />
+
+          <button id="searchButton" type="button">Search</button>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Customer ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Balance</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="searchResults">
+            <tr>
+              <td colspan="5">Search results will appear here.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <div class="grid-2 section-gap">
+        <section class="card" id="all-sessions">
+          <div class="section-header">
+            <div>
+              <h3>All Sessions</h3>
+              <p>Console option 5</p>
+            </div>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Session ID</th>
+                <th>Customer ID</th>
+                <th>PC ID</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Cost</th>
+              </tr>
+            </thead>
+            <tbody id="allSessionsTable"></tbody>
+          </table>
+        </section>
+
+        <section class="card" id="active-sessions">
+          <div class="section-header">
+            <div>
+              <h3>Active Sessions</h3>
+              <p>Console option 6</p>
+            </div>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Session ID</th>
+                <th>Customer</th>
+                <th>PC</th>
+                <th>Duration</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="activeSessionsTable"></tbody>
+          </table>
+        </section>
+      </div>
+
+      <section class="card" id="pc-availability">
+        <div class="section-header">
+          <div>
+            <h3>PC Availability</h3>
+            <p>Console option 7</p>
+          </div>
+        </div>
+
+        <div class="pc-grid" id="pcGrid"></div>
+      </section>
+
+      <section class="card section-gap" id="session-history">
+        <div class="section-header">
+          <div>
+            <h3>Customer Session History</h3>
+            <p>Console option 8</p>
+          </div>
+        </div>
+
+        <div class="search-bar">
+          <select id="historyCustomer"></select>
+          <input id="historyInfo" type="text" disabled value="Select a customer to view session history" />
+          <button id="historyButton" type="button">Load History</button>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Session ID</th>
+              <th>PC ID</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Cost</th>
+            </tr>
+          </thead>
+          <tbody id="historyTable">
+            <tr>
+              <td colspan="5">No history loaded yet.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
