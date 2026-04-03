@@ -27,7 +27,18 @@ namespace InternetCafeManagementSystem.Services
             sessions = new CustomLinkedList<Session>();
             db = new DatabaseHelper();
 
-            // Load all existing data from the database into the custom data structures on startup
+            // Test database connection before attempting to load data
+            if (!db.TestConnection())
+            {
+                Console.WriteLine("ERROR: Could not connect to the database.");
+                Console.WriteLine("Please make sure SQL Server Express is installed and the database.sql script has been run.");
+                Console.WriteLine("See README.md for setup instructions.");
+                Console.WriteLine("\nPress any key to exit...");
+                Console.ReadKey();
+                Environment.Exit(1);
+            }
+
+            // Load data from database on startup
             db.LoadCustomers(customers);
             db.LoadPCs(pcs);
             db.LoadSessions(sessions);

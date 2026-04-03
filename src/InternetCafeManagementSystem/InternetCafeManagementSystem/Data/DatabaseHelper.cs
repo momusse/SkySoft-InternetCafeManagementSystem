@@ -156,5 +156,22 @@ namespace InternetCafeManagementSystem.Data
 
             cmd.ExecuteNonQuery();
         }
+
+        // Tests the database connection on startup - O(1)
+        public bool TestConnection()
+        {
+            try
+            {
+                using SqlConnection conn = new SqlConnection(connectionString);
+                conn.Open();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
     }
+
 }
