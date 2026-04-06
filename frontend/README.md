@@ -11,7 +11,7 @@ It is designed to improve usability by presenting the system features in a struc
 ## Languages Used
 
 - HTML5
-- CSS3
+- CSS
 - JavaScript
 
 ## Features
