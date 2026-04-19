@@ -9,8 +9,7 @@ The system consists of two parts:
 
 ## 🎥 Video Demonstration
 
-### 🔧 Backend Demonstration (C# Console + API)
-
+### 🔧 Backend Demonstration
 [▶ Watch Backend Demo](https://drive.google.com/file/d/1pFkpDaAha5UuyIE0cJGs3bOFwxKIzi71/view?usp=sharing)
 
 This video demonstrates:
