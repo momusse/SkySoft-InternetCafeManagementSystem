@@ -10,7 +10,7 @@ The frontend is a fully interactive web interface built in HTML, CSS and JavaScr
 
 If you just want to see the visual design and layout of the customer portal without setting up the backend, you can view a static prototype here:
 
-**👉 https://marufspace.xo.je/skysoft/**
+**👉 [View Design Prototype](https://marufspace.xo.je/skysoft/)**
 
 > ⚠️ **Important:** This preview link is a **design prototype only**. It does not connect to a real database and uses placeholder data for visual demonstration purposes only.
 >
