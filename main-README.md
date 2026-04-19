@@ -7,19 +7,6 @@ The system consists of two parts:
 - A **C# console application** for staff — managing customers, PCs and sessions with a custom data structure implementation and SQL Server database
 - A **customer-facing web portal** — a live browser interface connected to the same database via a built-in REST API
 
----
-
-## 🌐 Quick Design Preview (No Setup Required)
-
-Want a quick look at the customer portal design without setting anything up?
-
-**👉 https://marufspace.xo.je/skysoft/**
-
-> ⚠️ This is a **visual prototype only** — it uses placeholder data and is not connected to a real database.  
-> For the fully working system with live data, follow the setup instructions below.
-
----
-
 ## Requirements
 
 - Visual Studio 2022
@@ -121,6 +108,7 @@ The web portal gives customers access to their own account through a browser. It
 | View personal order history | Option 8 |
 | Top up account balance | Option 9 |
 | View PC availability | Option 7 |
+| Sign Out | Option 11 |
 
 ---
 
