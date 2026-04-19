@@ -3,328 +3,340 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SkySoft Internet Cafe Management Panel</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>SkySoft Internet Cafe — Customer Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="app">
-    <aside class="sidebar">
-      <div class="brand">
-        <div class="brand-top">
-          <img src="logo.PNG" alt="SkySoft logo" class="brand-logo-image" />
-          <div class="brand-text">
-            <h1>SkySoft Internet Cafe</h1>
-            <p>Management Panel</p>
-          </div>
+  <header>
+    <div class="logo">
+      <div class="logo-icon">☕</div>
+      <div class="logo-text">
+        <h1>SkySoft Internet Cafe</h1>
+        <p>Customer Portal</p>
+      </div>
+    </div>
+    <div id="liveClock" class="pill">Loading...</div>
+  </header>
+
+  <!-- LANDING — sign in / register
+       Hidden once user logs in -->
+  <div class="landing" id="landingSection">
+
+    <div class="hero-badge">🖥️ Welcome to SkySoft Cafe</div>
+    <h2 class="hero-heading">Your cafe,<br><span>your dashboard.</span></h2>
+    <p class="hero-sub">
+      Check your balance, browse available machines, view your order history
+      and top up — all connected live to our backend system.
+    </p>
+
+    <!-- Sign In Card -->
+    <div class="card" id="loginCard">
+      <div class="card-title">Sign in to your account</div>
+      <div class="card-sub">Enter your Customer ID to get started</div>
+
+      <div class="field">
+        <label for="loginId">Customer ID</label>
+        <input type="text" id="loginId" placeholder="e.g. C001" />
+      </div>
+
+      <button class="btn" id="loginBtn">Sign In →</button>
+      <div id="loginMessage" class="message"></div>
+      <div class="divider">or</div>
+      <button class="btn secondary" id="showRegisterBtn">Create a new account</button>
+    </div>
+
+    <!-- Register Card (hidden by default) -->
+    <div class="card hidden" id="registerCard">
+      <div class="card-title">Create an account</div>
+      <div class="card-sub">
+        Register as a new SkySoft customer ·
+        <em>Maps to Console Option 10 — Add Customer</em>
+      </div>
+
+      <div class="form-row">
+        <div class="field">
+          <label for="regId">Customer ID</label>
+          <input type="text" id="regId" placeholder="e.g. C007" />
+        </div>
+        <div class="field">
+          <label for="regName">Full Name</label>
+          <input type="text" id="regName" placeholder="Your name" />
         </div>
       </div>
 
-      <div class="nav-title">Main Menu</div>
-      <nav class="nav">
-        <a href="#dashboard" class="active">Dashboard</a>
-        <a href="#add-customer">Add Customer</a>
-        <a href="#start-session">Start Session</a>
-        <a href="#end-session">End Session</a>
-        <a href="#search-customer">Search Customer</a>
-        <a href="#all-sessions">View All Sessions</a>
-        <a href="#active-sessions">View Active Sessions</a>
-        <a href="#pc-availability">View PC Availability</a>
-        <a href="#session-history">Session History</a>
-        <a href="#topup-balance">Top Up Balance</a>
-      </nav>
-    </aside>
-
-    <main class="main">
-      <div class="topbar" id="dashboard">
-        <div>
-          <h2>Internet Cafe Dashboard</h2>
-          <p>Frontend design based on the console app menu and database structure.</p>
+      <div class="form-row">
+        <div class="field">
+          <label for="regEmail">Email</label>
+          <input type="email" id="regEmail" placeholder="you@email.com" />
         </div>
-        <div class="pill" id="liveClock">Loading time...</div>
+        <div class="field">
+          <label for="regBalance">Starting Balance (£)</label>
+          <input type="number" id="regBalance" step="0.01" min="0" placeholder="10.00" />
+        </div>
       </div>
 
-      <section class="grid-4">
-        <div class="card">
-          <div class="stat-label">Total Customers</div>
-          <div class="stat-value" id="customerCount">6</div>
-          <div class="stat-note">Registered customers in the system</div>
-        </div>
-
-        <div class="card">
-          <div class="stat-label">Active Sessions</div>
-          <div class="stat-value" id="activeSessionCount">1</div>
-          <div class="stat-note">Currently in progress</div>
-        </div>
-
-        <div class="card">
-          <div class="stat-label">Available PCs</div>
-          <div class="stat-value" id="availablePcCount">3</div>
-          <div class="stat-note">Ready for new sessions</div>
-        </div>
-
-        <div class="card">
-          <div class="stat-label">Total Sessions</div>
-          <div class="stat-value" id="sessionCount">5</div>
-          <div class="stat-note">Stored in session history</div>
-        </div>
-      </section>
-
-      <section class="card quick-actions-card">
-        <div class="section-header">
-          <div>
-            <h3>Quick Actions</h3>
-            <p>These match the main features in the console app.</p>
-          </div>
-
-          <div class="actions quick-actions">
-            <a class="button quick-link primary" href="#start-session">Start Session</a>
-            <a class="button secondary quick-link" href="#end-session">End Session</a>
-            <a class="button secondary quick-link" href="#add-customer">Add Customer</a>
-          </div>
-        </div>
-      </section>
-
-      <div class="grid-2 section-gap">
-        <section class="card" id="add-customer">
-          <div class="section-header">
-            <div>
-              <h3>Add Customer</h3>
-              <p>Console option 10</p>
-            </div>
-          </div>
-
-          <form id="customerForm">
-            <div class="form-grid-2">
-              <div class="field">
-                <label for="customerId">Customer ID</label>
-                <input id="customerId" type="text" placeholder="e.g. C007" />
-              </div>
-
-              <div class="field">
-                <label for="customerName">Customer Name</label>
-                <input id="customerName" type="text" placeholder="Enter full name" />
-              </div>
-            </div>
-
-            <div class="form-grid-2">
-              <div class="field">
-                <label for="customerEmail">Email</label>
-                <input id="customerEmail" type="email" placeholder="example@email.com" />
-              </div>
-
-              <div class="field">
-                <label for="customerBalance">Starting Balance (£)</label>
-                <input id="customerBalance" type="number" step="0.01" min="0" placeholder="15.00" />
-              </div>
-            </div>
-
-            <div class="helper">
-              Validation includes required fields, unique ID, numeric balance, and banned-word filtering.
-            </div>
-
-            <button type="submit">Add Customer</button>
-            <div id="customerMessage" class="message"></div>
-          </form>
-        </section>
-
-        <section class="card" id="topup-balance">
-          <div class="section-header">
-            <div>
-              <h3>Top Up Customer Balance</h3>
-              <p>Console option 9</p>
-            </div>
-          </div>
-
-          <form id="topupForm">
-            <div class="field">
-              <label for="topupCustomer">Select Customer</label>
-              <select id="topupCustomer"></select>
-            </div>
-
-            <div class="field">
-              <label for="topupAmount">Top Up Amount (£)</label>
-              <input id="topupAmount" type="number" min="1" step="0.01" placeholder="10.00" />
-            </div>
-
-            <button type="submit">Top Up Balance</button>
-            <div id="topupMessage" class="message"></div>
-          </form>
-        </section>
+      <div class="helper">
+        ⚙ Validated: unique ID · no offensive language · numeric balance —
+        mirrors C# <code>ContainsBannedWord</code> check.
       </div>
 
+      <button class="btn" id="registerBtn">Register Account →</button>
+      <div id="registerMessage" class="message"></div>
+      <div class="divider">or</div>
+      <button class="btn secondary" id="showLoginBtn">← Back to sign in</button>
+    </div>
+
+  </div><!-- /landing -->
+
+  <!-- DASHBOARD -->
+  <div class="dashboard hidden" id="dashboard">
+
+    <!-- API connection status banner -->
+    <div id="apiBanner" class="api-banner api-connecting">
+      ⚡ Connecting to backend API on http://localhost:5000...
+    </div>
+
+    <!-- Welcome bar -->
+    <div class="topbar">
+      <div>
+        <h2>👋 Welcome, <span id="nameDisplay">—</span></h2>
+        <p>
+          Customer ID: <strong id="idDisplay">—</strong>
+          &nbsp;·&nbsp;
+          <span id="sessionStatus">No active session</span>
+        </p>
+      </div>
+      <button class="btn-sm danger" id="logoutBtn">Sign Out</button>
+    </div>
+
+    <!-- Stats: 4 tiles -->
+    <div class="grid-4">
+      <div class="stat-card">
+        <div class="stat-label">Total Customers</div>
+        <div class="stat-value" id="statTotalCustomers">—</div>
+        <div class="stat-note">All registered cafe customers</div>
+        <div class="stat-tag">← Backend: CustomerHashTable</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Active Sessions</div>
+        <div class="stat-value" id="statActiveSessions">—</div>
+        <div class="stat-note">Pending orders in progress</div>
+        <div class="stat-tag">← Console Option 6</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Available PCs</div>
+        <div class="stat-value" id="statAvailablePcs">—</div>
+        <div class="stat-note">Machines free to order on</div>
+        <div class="stat-tag">← Console Option 7</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Sessions</div>
+        <div class="stat-value" id="statTotalSessions">—</div>
+        <div class="stat-note">All orders ever placed</div>
+        <div class="stat-tag">← Console Option 5</div>
+      </div>
+    </div>
+
+    <!-- Quick actions -->
+    <div class="quick-card">
+      <div>
+        <h3>Quick Actions</h3>
+        <p>Mapped directly to console app options 1, 2 and 9</p>
+      </div>
+      <div class="quick-btns">
+        <button class="qbtn primary" data-tab="start-session">▶ Start Session</button>
+        <button class="qbtn secondary" data-tab="end-session">■ End Session</button>
+        <button class="qbtn secondary" data-tab="topup">+ Top Up Balance</button>
+      </div>
+    </div>
+
+    <!-- Navigation tabs -->
+    <div class="nav-tabs" id="navTabs">
+      <button class="nav-tab active" data-tab="overview">Overview</button>
+      <button class="nav-tab" data-tab="start-session">Start Session</button>
+      <button class="nav-tab" data-tab="end-session">End Session</button>
+      <button class="nav-tab" data-tab="search">Search Customers</button>
+      <button class="nav-tab" data-tab="history">Order History</button>
+      <button class="nav-tab" data-tab="topup">Top Up Balance</button>
+      <button class="nav-tab" data-tab="pcs">PC Availability</button>
+    </div>
+
+    <!-- ── Tab: Overview ── -->
+    <div class="tab-section active" id="tab-overview">
       <div class="grid-2">
-        <section class="card" id="start-session">
+
+        <div class="section-card">
           <div class="section-header">
-            <div>
-              <h3>Start Session</h3>
-              <p>Console option 1</p>
-            </div>
+            <h3>Your Balance</h3>
+            <p>Live from backend SQL database</p>
           </div>
-
-          <form id="startSessionForm">
-            <div class="field">
-              <label for="sessionCustomer">Customer</label>
-              <select id="sessionCustomer"></select>
-            </div>
-
-            <div class="field">
-              <label for="sessionPc">PC</label>
-              <select id="sessionPc"></select>
-            </div>
-
-            <button type="submit">Start New Session</button>
-            <div id="sessionStartMessage" class="message"></div>
-          </form>
-        </section>
-
-        <section class="card" id="end-session">
-          <div class="section-header">
-            <div>
-              <h3>End Session</h3>
-              <p>Console option 2</p>
-            </div>
-          </div>
-
-          <form id="endSessionForm">
-            <div class="field">
-              <label for="activeSessionSelect">Active Session</label>
-              <select id="activeSessionSelect"></select>
-            </div>
-
-            <button type="submit" class="danger">End Selected Session</button>
-            <div id="sessionEndMessage" class="message"></div>
-          </form>
-        </section>
-      </div>
-
-      <section class="card section-gap" id="search-customer">
-        <div class="section-header">
-          <div>
-            <h3>Search Customer</h3>
-            <p>Console options 3 and 4: by ID or by Name</p>
-          </div>
+          <div class="balance-display" id="balanceDisplay">£0.00</div>
+          <p class="balance-note">Top up your balance in the Top Up tab.</p>
         </div>
 
+        <div class="section-card">
+          <div class="section-header">
+            <h3>Active Sessions (Pending Orders)</h3>
+            <p>Console Option 6 — View Active Sessions</p>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Session ID</th><th>PC</th><th>Started</th><th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="activeSessionsTable">
+              <tr><td colspan="4">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <div class="full-card">
+        <div class="section-header">
+          <h3>All Sessions</h3>
+          <p>Console Option 5 — complete order log across all customers</p>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Session ID</th><th>Customer ID</th><th>PC</th>
+              <th>Start Time</th><th>End Time</th><th>Cost</th>
+            </tr>
+          </thead>
+          <tbody id="allSessionsTable">
+            <tr><td colspan="6">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── Tab: Start Session ── -->
+    <div class="tab-section hidden" id="tab-start-session">
+      <div class="section-card narrow">
+        <div class="section-header">
+          <h3>Start New Session</h3>
+          <p>Console Option 1 — assigns first available PC machine</p>
+        </div>
+        <div class="field">
+          <label for="sessionCustomer">Select Customer</label>
+          <select id="sessionCustomer"></select>
+        </div>
+        <button class="btn" id="startSessionBtn">▶ Start Session (Place Order)</button>
+        <div id="sessionStartMessage" class="message"></div>
+      </div>
+    </div>
+
+    <!-- ── Tab: End Session ── -->
+    <div class="tab-section hidden" id="tab-end-session">
+      <div class="section-card narrow">
+        <div class="section-header">
+          <h3>End Session</h3>
+          <p>Console Option 2 — completes order and calculates cost from PC hourly rate</p>
+        </div>
+        <div class="field">
+          <label for="activeSessionSelect">Select Active Session (Pending Order)</label>
+          <select id="activeSessionSelect"></select>
+        </div>
+        <button class="btn danger" id="endSessionBtn">■ End Session (Complete Order)</button>
+        <div id="sessionEndMessage" class="message"></div>
+      </div>
+    </div>
+
+    <!-- ── Tab: Search ── -->
+    <div class="tab-section hidden" id="tab-search">
+      <div class="full-card">
+        <div class="section-header">
+          <h3>Search Customers</h3>
+          <p>
+            Console Option 3 — Search by ID &nbsp;|&nbsp;
+            Console Option 4 — Search by Name
+          </p>
+        </div>
         <div class="search-bar">
           <select id="searchType">
             <option value="id">Search by ID</option>
             <option value="name">Search by Name</option>
           </select>
-
-          <input id="searchInput" type="text" placeholder="Enter customer ID or name" />
-
-          <button id="searchButton" type="button">Search</button>
+          <input type="text" id="searchInput" placeholder="Enter customer ID or name..." />
+          <button id="searchBtn">Search</button>
         </div>
-
+        <div class="helper">
+          ⚙ Offensive or restricted words are rejected
+          <code>ContainsBannedWord</code> validation in Program.cs.
+        </div>
         <table>
           <thead>
             <tr>
-              <th>Customer ID</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Balance</th>
-              <th>Status</th>
+              <th>Customer ID</th><th>Name</th><th>Email</th>
+              <th>Balance</th><th>Status</th>
             </tr>
           </thead>
           <tbody id="searchResults">
-            <tr>
-              <td colspan="5">Search results will appear here.</td>
-            </tr>
+            <tr><td colspan="5">Results will appear here.</td></tr>
           </tbody>
         </table>
-      </section>
-
-      <div class="grid-2 section-gap">
-        <section class="card" id="all-sessions">
-          <div class="section-header">
-            <div>
-              <h3>All Sessions</h3>
-              <p>Console option 5</p>
-            </div>
-          </div>
-
-          <table>
-            <thead>
-              <tr>
-                <th>Session ID</th>
-                <th>Customer ID</th>
-                <th>PC ID</th>
-                <th>Start Time</th>
-                <th>End Time</th>
-                <th>Cost</th>
-              </tr>
-            </thead>
-            <tbody id="allSessionsTable"></tbody>
-          </table>
-        </section>
-
-        <section class="card" id="active-sessions">
-          <div class="section-header">
-            <div>
-              <h3>Active Sessions</h3>
-              <p>Console option 6</p>
-            </div>
-          </div>
-
-          <table>
-            <thead>
-              <tr>
-                <th>Session ID</th>
-                <th>Customer</th>
-                <th>PC</th>
-                <th>Duration</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody id="activeSessionsTable"></tbody>
-          </table>
-        </section>
       </div>
+    </div>
 
-      <section class="card" id="pc-availability">
+    <!-- ── Tab: History ── -->
+    <div class="tab-section hidden" id="tab-history">
+      <div class="full-card">
         <div class="section-header">
-          <div>
-            <h3>PC Availability</h3>
-            <p>Console option 7</p>
-          </div>
+          <h3>Your Order History</h3>
+          <p>Console Option 8 — all past and current orders on your account</p>
         </div>
-
-        <div class="pc-grid" id="pcGrid"></div>
-      </section>
-
-      <section class="card section-gap" id="session-history">
-        <div class="section-header">
-          <div>
-            <h3>Customer Session History</h3>
-            <p>Console option 8</p>
-          </div>
-        </div>
-
-        <div class="search-bar">
-          <select id="historyCustomer"></select>
-          <input id="historyInfo" type="text" disabled value="Select a customer to view session history" />
-          <button id="historyButton" type="button">Load History</button>
-        </div>
-
         <table>
           <thead>
             <tr>
-              <th>Session ID</th>
-              <th>PC ID</th>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Cost</th>
+              <th>Session ID</th><th>PC</th><th>Start Time</th>
+              <th>End Time</th><th>Cost</th><th>Status</th>
             </tr>
           </thead>
           <tbody id="historyTable">
-            <tr>
-              <td colspan="5">No history loaded yet.</td>
-            </tr>
+            <tr><td colspan="6">Loading...</td></tr>
           </tbody>
         </table>
-      </section>
-    </main>
-  </div>
+      </div>
+    </div>
+
+    <!-- ── Tab: Top Up ── -->
+    <div class="tab-section hidden" id="tab-topup">
+      <div class="section-card narrow">
+        <div class="section-header">
+          <h3>Top Up Balance</h3>
+          <p>Console Option 9 — adds credit to your account in the SQL database</p>
+        </div>
+        <div class="field">
+          <label for="topupCurrentBalance">Current Balance</label>
+          <input type="text" id="topupCurrentBalance" disabled />
+        </div>
+        <div class="field">
+          <label for="topupAmount">Amount to Add (£)</label>
+          <input type="number" id="topupAmount" step="0.01" min="0.01" placeholder="10.00" />
+        </div>
+        <div class="helper">⚙ Positive amounts only. Zero or negative values are rejected.</div>
+        <button class="btn" id="topupBtn">+ Add Credit</button>
+        <div id="topupMessage" class="message"></div>
+      </div>
+    </div>
+
+    <!-- ── Tab: PC Availability ── -->
+    <div class="tab-section hidden" id="tab-pcs">
+      <div class="full-card">
+        <div class="section-header">
+          <h3>PC Availability</h3>
+          <p>Console Option 7 — machines free to order on right now</p>
+        </div>
+        <div class="pc-grid" id="pcGrid">
+          <p>Loading...</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /dashboard -->
 
   <script src="script.js"></script>
 </body>
