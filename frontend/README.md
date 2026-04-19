@@ -55,6 +55,7 @@ The customer portal mirrors the core functionality of the C# console application
 | View personal order history | Option 8 — Session History |
 | Top up account balance | Option 9 — Top Up Balance |
 | View PC availability | Option 7 — PC Availability |
+| Sign Out | Option 11 — Exit  |
 
 ---
 
