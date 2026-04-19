@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using InternetCafeManagementSystem.DataStructures;
 
 namespace InternetCafeManagementSystem.Tests
@@ -7,7 +6,7 @@ namespace InternetCafeManagementSystem.Tests
     [TestClass]
     public class CustomHashTableTests
     {
-        // ✅ UT01
+        //  UT01
         [TestMethod]
         public void Add_ValidItem_ItemCanBeRetrieved()
         {
@@ -22,7 +21,7 @@ namespace InternetCafeManagementSystem.Tests
             Assert.AreEqual("Hasan", result);
         }
 
-        // ✅ UT02: Retrieve correct value
+        //  UT02: Retrieve correct value
         [TestMethod]
         public void Retrieve_Item_ReturnsCorrectValue()
         {
@@ -37,7 +36,7 @@ namespace InternetCafeManagementSystem.Tests
             Assert.AreEqual("Ali", result);
         }
 
-        // ✅ UT03: Duplicate key should throw exception
+        //  UT03: Duplicate key should throw exception
         [TestMethod]
         public void Add_DuplicateKey_ThrowsException()
         {
