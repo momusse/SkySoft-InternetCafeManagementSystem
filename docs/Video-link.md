@@ -1,7 +1,7 @@
 Video Demonstration
 Backend Demonstration (C# Console + API)
 
-👉 Watch the demo here:
+👉 Watch the back-end video demonstration here:
 https://drive.google.com/file/d/1pFkpDaAha5UuyIE0cJGs3bOFwxKIzi71/view?usp=sharing
 
 This video demonstrates:
