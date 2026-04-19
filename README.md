@@ -7,9 +7,8 @@ The system consists of two parts:
 - A **C# console application** for staff — managing customers, PCs and sessions with a custom data structure implementation and SQL Server database
 - A **customer-facing web portal** — a live browser interface connected to the same database via a built-in REST API
 
-## 🎥 Video Demonstration
+## 🎥 Backend Video Demonstration
 
-### 🔧 Backend Demonstration
 [▶ Watch Backend Demo](https://drive.google.com/file/d/1pFkpDaAha5UuyIE0cJGs3bOFwxKIzi71/view?usp=sharing)
 
 This video demonstrates:
