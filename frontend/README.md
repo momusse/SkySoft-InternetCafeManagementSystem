@@ -34,9 +34,9 @@ Without SQL Server Express running and the database set up, the frontend will sh
 
 ## Languages Used
 
-- HTML5
-- CSS3
-- JavaScript (ES6+)
+- HTML
+- CSS
+- JavaScript
 
 ---
 
